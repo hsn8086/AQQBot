@@ -1,7 +1,8 @@
 import os
+from typing import Optional
 
 from commands.base_command import BaseCommand
-from util import CreateImg, get_cmd
+from util import create_img, get_cmd
 
 
 class Command(BaseCommand):
@@ -16,10 +17,12 @@ class Command(BaseCommand):
         cmd_list.remove('__pycache__')
         rt_list = []
         for i in [i.split('.')[0] for i in cmd_list]:
-            rt_list += self.get_cmd(i, get_cmd(i))
-        await app.send_message(user, CreateImg('/' + '\n/'.join(rt_list)))
+            rt_list += self.get_cmd(i, get_cmd(i), '')
+        await app.send_message(user, create_img('/' + '\n/'.join(rt_list)))
 
-    def get_cmd(self, name: str, class_):
+    def get_cmd(self, name: str, class_, base: Optional[str]):
+        if base is None:
+            base = ''
         description = ''
         arg = ''
         sub_command = []
@@ -37,5 +40,5 @@ class Command(BaseCommand):
             ...
         sub_list = []
         for s in sub_command:
-            sub_list += self.get_cmd(s.__name__, s)
-        return [f'{name} {arg} {description}'] + sub_list
+            sub_list += self.get_cmd(s.__name__, s(), f'{base}{name} ')
+        return [f'{base}{name} {arg}' + (f':{description}' if description else '')] + sub_list

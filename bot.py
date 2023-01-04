@@ -9,7 +9,7 @@ from graia.ariadne.message.chain import MessageChain
 from graia.ariadne.model import Group, Friend, Member
 
 from permissions import Permissions
-from util import CreateImg, is_cmd, is_txt, msg_chain_join, get_cmd
+from util import create_img, is_cmd, is_txt, msg_chain_join, get_cmd
 
 app = Ariadne(
     config(
@@ -18,7 +18,7 @@ app = Ariadne(
     ),
 )
 
-permissions_manager = Permissions('permissions.json')
+permissions_manager = Permissions("permissions.data")
 
 
 @app.broadcast.receiver(GroupMessage)
@@ -36,7 +36,7 @@ async def cmd(cmd_str: str, user: Union[Group, Friend, Member], app):
             if os.path.exists(os.path.join('commands', cmd_list[0] + '.py')):
                 await get_cmd(cmd_list[0]).run(app, cmd_list, user)
             else:
-                await app.send_message(user, CreateImg('无效的命令,请使用/help获取帮助'))
+                await app.send_message(user, create_img('无效的命令,请使用/help获取帮助'))
 
 
 app.launch_blocking()

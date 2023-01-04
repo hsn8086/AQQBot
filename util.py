@@ -13,12 +13,14 @@ from graia.ariadne.message.element import Image as Im
 cmd_hash_dict = {}
 
 
-def CreateImg(text):
+def create_img(text):
     fontSize = 30
     liens = text.split('\n')
     # 画布颜色
     im = Image.new("RGB",
-                   (len(text) * fontSize, max(len(liens) * (fontSize + 5), int(0.5 * len(text) * (fontSize + 5)))),
+                   (max(len(i) for i in liens) * fontSize,
+                    max(len(liens) * (fontSize + 5), int(0.5 * max(len(i) for i in liens) * fontSize))
+                    ),
                    (255, 255, 255))
     dr = ImageDraw.Draw(im)
 

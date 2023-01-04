@@ -2,12 +2,15 @@ import json
 import os.path
 from typing import Union
 
+from data_manager import DataManager
+
 
 class Permissions:
     def __init__(self, fp):
+
         self.fp = fp
         if os.path.exists(fp):
-            with open(fp, 'r', encoding='utf8') as f:
+            with DataManager().open(fp, 'r', encoding='utf8') as f:
                 self.p_json: dict = json.load(f)
         else:
             self.p_json = {'members': {}, 'groups': {}}
@@ -15,7 +18,8 @@ class Permissions:
     def save(self):
         if not os.path.exists(self.fp):
             os.makedirs(os.path.split(self.fp)[0])
-        with open(self.fp, 'w', encoding='utf8') as f:
+
+        with DataManager().open(self.fp, 'w', encoding='utf8') as f:
             json.dump(self.p_json, f)
 
     def list_group(self):
