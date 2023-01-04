@@ -23,7 +23,7 @@ permissions_manager = Permissions("permissions.data")
 
 @app.broadcast.receiver(GroupMessage)
 async def friend_message_listener(app: Ariadne, msg: MessageChain, group: Group):
-    if group.id == 1102235012 and is_txt(msg):
+    if group.id in [1102235012, 766108072] and is_txt(msg):
         text = msg_chain_join(' ', msg)
         if is_cmd(text):
             await cmd(text, group, app)

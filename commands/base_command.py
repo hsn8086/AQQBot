@@ -13,5 +13,5 @@ class BaseCommand:
         else:
             await self._on_call(app, cmd_list_, user)
 
-    async def _on_call(self, app, cmd_list, user):
+    async def _on_call(self, app, cmd_list: list, user):
         ...
