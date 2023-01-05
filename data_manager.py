@@ -13,16 +13,18 @@ class DataManager:
         def __init__(self, fp: str):
             self.fp = fp
 
-        def __call__(self, p: str, model, encoding='utf8'):
+        def __call__(self, p: str, mode, encoding='utf8'):
             self.filename = os.path.join(self.fp, *p.split('.'))
             if not os.path.exists(os.path.split(self.filename)[0]):
                 os.makedirs(os.path.split(self.filename)[0])
-            self.model = model
+            self.mode = mode
             self.encoding = encoding
+            if 'b' in mode:
+                self.encoding = None
             return self
 
         def __enter__(self):
-            self.f = open(self.filename, self.model, encoding=self.encoding)
+            self.f = open(self.filename, self.mode, encoding=self.encoding)
             return self.f
 
         def __exit__(self, exc_type, exc_val, exc_tb):

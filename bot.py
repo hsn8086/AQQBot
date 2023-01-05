@@ -42,7 +42,7 @@ async def group_message_listener(app: Ariadne, msg: MessageChain, group: Group):
     if result[0] == '1':
         illegal_list.append(str(msg))
 
-    if group.id in [1102235012, 766108072, 683196277, 915169893] and is_txt(msg):
+    if group.id in [1102235012, 766108072, 683196277, 915169893,1036190558] and is_txt(msg):
         text = msg_chain_join(' ', msg)
         if is_cmd(text):
             await cmd(text, group, app)
