@@ -19,7 +19,7 @@ def create_img(text):
     # 画布颜色
     im = Image.new("RGB",
                    (max(len(i) for i in liens) * fontSize,
-                    max(len(liens) * (fontSize + 5), int(0.5 * max(len(i) for i in liens) * fontSize))
+                    max(len(liens) * (fontSize + 7), int(0.5 * max(len(i) for i in liens) * fontSize))
                     ),
                    (255, 255, 255))
     dr = ImageDraw.Draw(im)
