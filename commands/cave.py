@@ -19,7 +19,7 @@ class post(BaseCommand):
             with DataManager().open(f'cave.review.{sha1(bytes(" ".join(cmd_list[0:]), encoding="utf8")).hexdigest()}',
                                     'w') as f:
                 f.write(' '.join(cmd_list[0:]))
-            await app.send_message(user, create_img("已添加"))
+            await app.send_message(user, create_img("已添加,审核中"))
         else:
             await app.send_message(user, create_img("指令长度有误"))
 
