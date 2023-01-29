@@ -11,6 +11,7 @@ class Command(BaseCommand):
     def __init__(self):
         super().__init__()
         self.description = '喜报'
+        self.arg='<文本>'
 
     async def _on_call(self, app, cmd_list: list, user):
         im = util.good_new(' '.join(cmd_list[0:]))
