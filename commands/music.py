@@ -45,7 +45,7 @@ class Command(BaseCommand):
             id_ = cmd_list[0]
         else:
             name = ' '.join(cmd_list)
-            msg = await app.send_message(user, create_img(f'正在搜素歌曲:"{name}"'))
+            msg = await app.send_message(user, create_img(f'正在搜索歌曲:"{name}"'))
             music_list = get_list(name)
             if len(music_list) >= 1:
                 id_ = music_list[0]["id"]
