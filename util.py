@@ -4,7 +4,7 @@ import os.path
 from hashlib import sha1
 from io import BytesIO
 
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from graia.ariadne.message.chain import MessageChain
 from graia.ariadne.message.element import Image as Im
 from graia.ariadne.message.element import Plain
@@ -38,6 +38,45 @@ def create_img(text):
     byte_data = output_buffer.getvalue()
     base64_str = base64.b64encode(byte_data).decode('utf-8')
     return Im(base64=base64_str)
+
+
+def code(text):
+    k = 2
+
+    font_title = ImageFont.truetype("MyriadPro-Bold", 28 * k)
+    font_text = ImageFont.truetype("msyh", 28 * k)
+
+    _, _, _, line_h = font_text.getbbox(text)
+
+    num_w = font_text.getbbox(str(len(text.split('\n')) + 1))[2]
+    w = max([font_text.getbbox(i)[2] for i in text.split('\n')])
+
+    h = int((line_h * 5 / 3) * len(text.split('\n')) + (line_h * 2 / 3))
+
+    w += num_w + 80 * k
+    h += 60 * k
+
+    w = max(w, 256 * k)
+
+    # 画布颜色
+    im = Image.new("RGB",
+                   (w, h),
+                   (0x2B, 0x2E, 0x30))
+    dr = ImageDraw.Draw(im)
+    dr.rectangle(((0, 0), (w * k, 60 * k)), '#282A2C')
+    dr.ellipse([(30 * k, 20 * k), (50 * k, 40 * k)], '#BB5A53', '#BB5A53', 0)
+    dr.ellipse([(66 * k, 20 * k), (86 * k, 40 * k)], '#B99752', '#B99752', 0)
+    dr.ellipse([(102 * k, 20 * k), (122 * k, 40 * k)], '#59A553', '#59A553', 0)
+
+    dr.text((138 * k, 20 * k), 'Code', '#90BEBF', font_title)
+
+    for i in range(len(text.split('\n'))):
+        num_left = (num_w - font_text.getbbox(str(i + 1))[2]) + 20 * k
+        line = text.split('\n')[i]
+        dr.text((num_left, int(60 * k + (line_h * 2 / 3) + i * (line_h * 5 / 3))), str(i + 1), '#757575', font_text)
+        dr.text((num_w + 50 * k, int(60 * k + (line_h * 2 / 3) + i * (line_h * 5 / 3))), line, '#DDDDDD', font_text)
+
+    return im.filter(ImageFilter.SMOOTH).resize((w, h))
 
 
 def is_cmd(cmd_str: str) -> bool:
