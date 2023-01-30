@@ -2,7 +2,7 @@ import os
 from typing import Optional
 
 from commands.base_command import BaseCommand
-from util import create_img, get_cmd
+from util import code_graia_img, get_cmd
 
 
 class Command(BaseCommand):
@@ -18,7 +18,7 @@ class Command(BaseCommand):
         rt_list = []
         for i in [i.split('.')[0] for i in cmd_list]:
             rt_list += self.get_cmd(i, get_cmd(i), '')
-        await app.send_message(user, create_img('/' + '\n/'.join(rt_list)))
+        await app.send_message(user, code_graia_img('/' + '\n/'.join(rt_list)))
 
     def get_cmd(self, name: str, class_, base: Optional[str]):
         if base is None:

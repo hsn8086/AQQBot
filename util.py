@@ -40,10 +40,18 @@ def create_img(text):
     return Im(base64=base64_str)
 
 
-def code(text):
+def code_graia_img(text, title='Code'):
+    output_buffer = BytesIO()
+    code(text, title).save(output_buffer, format='png')
+    byte_data = output_buffer.getvalue()
+    base64_str = base64.b64encode(byte_data).decode('utf-8')
+    return Im(base64=base64_str)
+
+
+def code(text, title='Code'):
     k = 2
 
-    font_title = ImageFont.truetype("MyriadPro-Bold", 28 * k)
+    font_title = ImageFont.truetype("MyriadPro-Bold".upper(), 28 * k)
     font_text = ImageFont.truetype("msyh", 28 * k)
 
     _, _, _, line_h = font_text.getbbox(text)
