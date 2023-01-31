@@ -139,3 +139,31 @@ def good_new(text: str) -> Image:
     text_w = max([font.getbbox(i)[2] for i in text.split('\n')])
     draw.text(align='center', text=text, xy=((x - text_w) / 2, (y - text_h) / 2), font=font, fill='#FF0000')
     return image
+
+
+def create_mask(im: Image):
+    assert im.mode == 'RGBA'
+    x, y = im.size
+    im_mask = Image.new('L', (x, y), 255)
+    pix_mask = im_mask.load()
+    pix_im = im.load()
+
+    for i in range(y):
+        for j in range(x):
+            pix_mask[j, i] = (pix_im[j, i][3],)
+    return im_mask
+
+
+def acv(text='创建一个成就', title='获得成就!', item='book', text_color='#FFFFFF', title_color='#FFF200'):
+    im_item = Image.open(os.path.join('mc_items', item + '.png')).resize((32, 32)).filter(ImageFilter.DETAIL)
+    im = Image.new("RGBA", (320, 64), (0, 0, 0, 0))
+    draw = ImageDraw.Draw(im, "RGBA")
+    draw.rounded_rectangle((0, 0, 320, 64), 6, (0x20, 0x20, 0x20, 0xff), width=4,
+                           outline=(0x52, 0x52, 0x52, 0xff))
+    im.paste(im_item, (16, 16, 48, 48), mask=create_mask(im_item))
+
+    font = ImageFont.truetype("unifont-15.0.01.otf", 16)
+
+    draw.text((64, 12), title.replace('_', ' '), title_color, font)
+    draw.text((64, 36), text.replace('_', ' '), text_color, font)
+    return im
